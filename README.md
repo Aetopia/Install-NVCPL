@@ -4,7 +4,6 @@ A simple PowerShell script to install the NVIDIA Control Panel as a UWP or Win32
 ## Usage
 Use the following command to run the script:
 ```ps
-```
 irm "https://raw.githubusercontent.com/Aetopia/Install-NVCPL/main/.ps1" | iex
 ```
 
