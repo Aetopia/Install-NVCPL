@@ -24,33 +24,31 @@ int main(int argc, char *argv[])
                             .nShow = SW_SHOWNORMAL,
                             .fMask = SEE_MASK_NOCLOSEPROCESS};
 
-    if (!hService)
+    if (hService)
     {
-        CloseServiceHandle(hService);
-        return 1;
+        ChangeServiceConfig(hService, SERVICE_NO_CHANGE, SERVICE_DEMAND_START, SERVICE_NO_CHANGE, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+        StartService(hService, 0, NULL);
+        while (TRUE)
+        {
+            QueryServiceStatusEx(hService, SC_STATUS_PROCESS_INFO, (LPBYTE)&ssp, sizeof(SERVICE_STATUS_PROCESS), &dwBytesNeeded);
+            if (ssp.dwCurrentState == SERVICE_RUNNING)
+                break;
+        }
+
+        ShellExecuteEx(&sei);
+        WaitForSingleObject(sei.hProcess, INFINITE);
+
+        ControlService(hService, SERVICE_CONTROL_STOP, (LPSERVICE_STATUS)&ssp);
+        while (TRUE)
+        {
+            QueryServiceStatusEx(hService, SC_STATUS_PROCESS_INFO, (LPBYTE)&ssp, sizeof(SERVICE_STATUS_PROCESS), &dwBytesNeeded);
+            if (ssp.dwCurrentState == SERVICE_STOPPED)
+                break;
+        }
+
+        ChangeServiceConfig(hService, SERVICE_NO_CHANGE, SERVICE_DISABLED, SERVICE_NO_CHANGE, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
     };
-
-    ChangeServiceConfig(hService, SERVICE_NO_CHANGE, SERVICE_DEMAND_START, SERVICE_NO_CHANGE, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-    StartService(hService, 0, NULL);
-    while (TRUE)
-    {
-        QueryServiceStatusEx(hService, SC_STATUS_PROCESS_INFO, (LPBYTE)&ssp, sizeof(SERVICE_STATUS_PROCESS), &dwBytesNeeded);
-        if (ssp.dwCurrentState == SERVICE_RUNNING)
-            break;
-    }
-
-    ShellExecuteEx(&sei);
-    WaitForSingleObject(sei.hProcess, INFINITE);
-
-    ControlService(hService, SERVICE_CONTROL_STOP, (LPSERVICE_STATUS)&ssp);
-    while (TRUE)
-    {
-        QueryServiceStatusEx(hService, SC_STATUS_PROCESS_INFO, (LPBYTE)&ssp, sizeof(SERVICE_STATUS_PROCESS), &dwBytesNeeded);
-        if (ssp.dwCurrentState == SERVICE_STOPPED)
-            break;
-    }
-
-    ChangeServiceConfig(hService, SERVICE_NO_CHANGE, SERVICE_DISABLED, SERVICE_NO_CHANGE, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    CloseServiceHandle(hService);
 
     return 0;
 }
