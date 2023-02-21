@@ -36,7 +36,7 @@ if ((New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsI
         Stop-Process -Name "NVDisplay.Container" -Force -ErrorAction SilentlyContinue
         Set-Service "NVDisplay.ContainerLocalSystem" -StartupType Disabled -ErrorAction SilentlyContinue
         Stop-Service "NVDisplay.ContainerLocalSystem" -Force -ErrorAction SilentlyContinue
-        foreach ($i in ($InstallationDirectory, $ShortcutFile)) { Remove-Item "$i" -Recurse -Force -ErrorAction SilentlyContinue }
+        foreach ($File in ($InstallationDirectory, $ShortcutFile)) { Remove-Item "$File" -Recurse -Force -ErrorAction SilentlyContinue }
         Expand-Archive "$NVCPL" "$InstallationDirectory" -Force
 
         # This launcher is needed inorder to suppress the annoying pop-up that the UWP Control Panel isn't installed.
