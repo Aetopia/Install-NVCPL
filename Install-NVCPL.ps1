@@ -1,4 +1,7 @@
-function Install-NVCPL ([switch]$UWP) {
+if ((New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)){
+
+    choice.exe /C 12 /N /M "Install NVIDIA Control Panel as:`n1. Win32 App`n2. UWP App`n>"
+
     $NVCPL = "$ENV:TEMP\NVCPL.zip"
     $InstallationDirectory = "$ENV:PROGRAMDATA\NVIDIA Corporation\NVCPL"
     $ShortcutFile = "$ENV:PROGRAMDATA\Microsoft\Windows\Start Menu\Programs\NVIDIA Control Panel.lnk"
@@ -45,4 +48,6 @@ function Install-NVCPL ([switch]$UWP) {
     $Shortcut.IconLocation = "$InstallationDirectory\nvcplui.exe, 0"
     $Shortcut.Save()
     Write-Output "NVIDIA Control Panel Installed!"
+} else {
+    Write-Error "Run this script as an Administrator." -ErrorAction Stop
 }
