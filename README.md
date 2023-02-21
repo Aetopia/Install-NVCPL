@@ -6,6 +6,7 @@ Use the following command to run the script:
 ```ps
 ```
 irm "https://raw.githubusercontent.com/Aetopia/Install-NVCPL/main/.ps1" | iex
+```
 
 ## Build NVCPL Launcher
 1. Install `GCC` and [`UPX`](https://upx.github.io/).
