@@ -15,7 +15,7 @@ BOOL DllMain(
         {
             if (CreateMutexW(NULL, TRUE, L"NVIDIA Control Panel") &&
                 GetLastError() == ERROR_ALREADY_EXISTS)
-                return TRUE;
+                TerminateProcess(GetCurrentProcess(), 0);
             hSCManager = OpenSCManagerW(NULL, NULL, SC_MANAGER_ALL_ACCESS),
             hService = OpenServiceW(hSCManager, L"NVDisplay.ContainerLocalSystem", SERVICE_ALL_ACCESS);
             ChangeServiceConfigW(hService, SERVICE_NO_CHANGE, SERVICE_DEMAND_START, SERVICE_NO_CHANGE, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
