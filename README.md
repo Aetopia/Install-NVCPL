@@ -7,9 +7,9 @@ Use the following command to run the script:
 irm "https://raw.githubusercontent.com/Aetopia/Install-NVCPL/main/Install-NVCPL.ps1" | iex
 ```
 
-## Build NVCPL Launcher
+## Build NVIDIA Control Panel Service Launcher 
 1. Install `GCC` and [`UPX`](https://upx.github.io/).
 2. Run `build.bat`.
 3. Now simply extract a NVIDIA Control Panel APPX package as a `.zip` archive.              
-4. Place `nvcpl.exe` in `Display.Driver\NVCPL` within extracted `.zip` file directory.
-5. Use `nvcpl.exe` to launch the NVIDIA Control Panel.
+4. Replace `nvcpluir.dll` in `Display.Driver\NVCPL` within extracted `.zip` file directory.
+5. Run `nvcplui.exe` as an Administrator to launch the NVIDIA Control Panel.

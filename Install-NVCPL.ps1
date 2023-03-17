@@ -32,18 +32,23 @@ if ((New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsI
     else {
 
         Write-Output "Installing the NVIDIA Control Panel as a Win32 app..."
-        # Disable the NVIDIA Root Container Service. The NVIDIA Control Panel Launcher runs the service when the NVIDIA Control Panel is launched.
+
+        # Run the NVIDIA Control Panel as an Administrator.
+        New-Item "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" -ErrorAction SilentlyContinue | Out-Null
+        New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" -Name "$InstallationDirectory\nvcplui.exe" -Value "~ RUNASADMIN" -PropertyType String -Force -ErrorAction SilentlyContinue | Out-Null
+        
+        # Disable the NVIDIA Root Container Service. The service runs when the NVIDIA Control Panel is launched.
         Stop-Process -Name "NVDisplay.Container" -Force -ErrorAction SilentlyContinue
         Set-Service "NVDisplay.ContainerLocalSystem" -StartupType Disabled -ErrorAction SilentlyContinue
         Stop-Service "NVDisplay.ContainerLocalSystem" -Force -ErrorAction SilentlyContinue
         foreach ($File in ($InstallationDirectory, $ShortcutFile)) { Remove-Item "$File" -Recurse -Force -ErrorAction SilentlyContinue }
         Expand-Archive "$NVCPL" "$InstallationDirectory" -Force
 
-        # This launcher is needed inorder to suppress the annoying pop-up that the UWP Control Panel isn't installed.
-        Invoke-RestMethod "$((Invoke-RestMethod "https://api.github.com/repos/Aetopia/Install-NVCPL/releases/latest").assets.browser_download_url)" -OutFile "$InstallationDirectory\nvcpl.exe"
+        # This DLL is needed inorder to suppress the annoying pop-up that says the UWP Control Panel isn't installed.
+        Invoke-RestMethod "$((Invoke-RestMethod "https://api.github.com/repos/Aetopia/Install-NVCPL/releases/latest").assets.browser_download_url)" -OutFile "$InstallationDirectory\nvcpluir.dll"
         $WSShell = New-Object -ComObject "WScript.Shell"
         $Shortcut = $WSShell.CreateShortcut("$ShortcutFile")
-        $Shortcut.TargetPath = "$InstallationDirectory\nvcpl.exe"
+        $Shortcut.TargetPath = "$InstallationDirectory\nvcplui.exe"
         $Shortcut.IconLocation = "$InstallationDirectory\nvcplui.exe, 0"
         $Shortcut.Save()
     }
