@@ -20,11 +20,11 @@ BOOL DllMain(
             hService = OpenServiceW(hSCManager, L"NVDisplay.ContainerLocalSystem", SERVICE_ALL_ACCESS);
             ChangeServiceConfigW(hService, SERVICE_NO_CHANGE, SERVICE_DEMAND_START, SERVICE_NO_CHANGE, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
             StartServiceW(hService, 0, NULL);
+            ChangeServiceConfigW(hService, SERVICE_NO_CHANGE, SERVICE_DISABLED, SERVICE_NO_CHANGE, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
             do
             {
                 QueryServiceStatusEx(hService, SC_STATUS_PROCESS_INFO, (LPBYTE)&ssp, sizeof(SERVICE_STATUS_PROCESS), &dwBytesNeeded);
             } while (ssp.dwCurrentState != SERVICE_RUNNING);
-            ChangeServiceConfigW(hService, SERVICE_NO_CHANGE, SERVICE_DISABLED, SERVICE_NO_CHANGE, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
         }
         else if (fdwReason == DLL_PROCESS_DETACH)
         {
