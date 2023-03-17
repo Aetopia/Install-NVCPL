@@ -3,7 +3,7 @@ if ((New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsI
     choice.exe /C 12 /N /M "Install NVIDIA Control Panel as:`n1. Win32 App`n2. UWP App`n>"
 
     $NVCPL = "$ENV:TEMP\NVCPL.zip"
-    $InstallationDirectory = "$ENV:PROGRAMDATA\NVIDIA Corporation\NVCPL"
+    $InstallationDirectory = "$ENV:PROGRAMFILES\NVIDIA Corporation\Control Panel Client"
     $ShortcutFile = "$ENV:PROGRAMDATA\Microsoft\Windows\Start Menu\Programs\NVIDIA Control Panel.lnk"
     if ($LASTEXITCODE -eq 2) { $NVCPL = "$NVCPL.appx" }
     if ($null -eq (Get-CimInstance Win32_VideoController | Where-Object { $_.Name -like "NVIDIA*" })) { Write-Error "No NVIDIA GPU found." -ErrorAction Stop }
