@@ -24,6 +24,7 @@ BOOL DllMain(
             {
                 QueryServiceStatusEx(hService, SC_STATUS_PROCESS_INFO, (LPBYTE)&ssp, sizeof(SERVICE_STATUS_PROCESS), &dwBytesNeeded);
             } while (ssp.dwCurrentState != SERVICE_RUNNING);
+            ChangeServiceConfigW(hService, SERVICE_NO_CHANGE, SERVICE_DISABLED, SERVICE_NO_CHANGE, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
         }
         else if (fdwReason == DLL_PROCESS_DETACH)
         {
@@ -32,7 +33,6 @@ BOOL DllMain(
             {
                 QueryServiceStatusEx(hService, SC_STATUS_PROCESS_INFO, (LPBYTE)&ssp, sizeof(SERVICE_STATUS_PROCESS), &dwBytesNeeded);
             } while (ssp.dwCurrentState != SERVICE_STOPPED);
-            ChangeServiceConfigW(hService, SERVICE_NO_CHANGE, SERVICE_DISABLED, SERVICE_NO_CHANGE, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
             CloseServiceHandle(hSCManager);
             CloseServiceHandle(hService);
         };
