@@ -1,5 +1,5 @@
 # Install-NVCPL
-A simple PowerShell script to install the NVIDIA Control Panel as a UWP or Win32 App!
+A simple PowerShell script to install the NVIDIA Control Panel as an UWP or a Win32 App!
 
 ## Usage
 Use the following command to run the script:
