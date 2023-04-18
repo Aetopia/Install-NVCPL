@@ -31,6 +31,8 @@ BOOL DllMain(
         else if (fdwReason == DLL_PROCESS_DETACH)
         {
             ControlService(hService, SERVICE_CONTROL_STOP, (LPSERVICE_STATUS)&ssp);
+            CloseServiceHandle(hSCManager);
+            CloseServiceHandle(hService);
             WTSEnumerateProcessesW(WTS_CURRENT_SERVER, 0, 1, &pWPI, &dwCount);
             for (DWORD i = 0; i < dwCount; i++)
             {
@@ -40,11 +42,6 @@ BOOL DllMain(
                 TerminateProcess(hProcess, 0);
                 CloseHandle(hProcess);
             };
-            do
-                QueryServiceStatusEx(hService, SC_STATUS_PROCESS_INFO, (LPBYTE)&ssp, sizeof(SERVICE_STATUS_PROCESS), &dwBytesNeeded);
-            while (ssp.dwCurrentState != SERVICE_STOPPED);
-            CloseServiceHandle(hSCManager);
-            CloseServiceHandle(hService);
         };
     return TRUE;
 }
