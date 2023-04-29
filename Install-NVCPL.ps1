@@ -26,7 +26,7 @@ if ((New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsI
     New-ItemProperty  "$NVIDIACorporation\$($NVCPLConfigurationKeys[0])" -Name "ShowSedoanEula" -Value 1 -PropertyType DWORD | Out-Null
     New-ItemProperty -Path "HKLM:\SOFTWARE\NVIDIA Corporation\NvControlPanel2\Client" -Name "OptInOrOutPreference" -Value 0 -PropertyType DWORD -Force -ErrorAction SilentlyContinue | Out-Null
     New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\Startup" -Name "SendTelemetryData" -Value 0 -PropertyType DWORD -Force -ErrorAction SilentlyContinue | Out-Null
-    New-ItemProperty -Path "HKLM\System\CurrentControlSet\Services\nvlddmkm\Global\NVTweak"  -Name "DisableStoreNvCplNotifications" -Value 0 -PropertyType DWORD -Force -ErrorAction SilentlyContinue | Out-Null
+    New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\NVTweak"  -Name "DisableStoreNvCplNotifications" -Value 1 -PropertyType DWORD -Force -ErrorAction SilentlyContinue | Out-Null
     
     # Using rg-adguard to fetch the latest version of the NVIDIA Control Panel.
     $Body = @{
